@@ -11,12 +11,6 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
-    env:
-      GITHUB_ID: ${{ secrets.CI_GITHUB_ID }}
-      GITHUB_SECRET: ${{ secrets.CI_GITHUB_SECRET }}
-      NEXTAUTH_URL: http://localhost:3000
-      NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -40,6 +34,11 @@ jobs:
       
     - name: Run Playwright tests
       run: pnpm exec playwright test
+      env:
+        GITHUB_ID: ${{ secrets.CI_GITHUB_ID }}
+        GITHUB_SECRET: ${{ secrets.CI_GITHUB_SECRET }}
+        NEXTAUTH_URL: http://localhost:3000
+        NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
       
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
