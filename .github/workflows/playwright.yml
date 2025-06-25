@@ -31,22 +31,6 @@ jobs:
 
     - name: Install Playwright Browsers
       run: pnpm exec playwright install --with-deps
-
-    - name: Start ngrok
-      run: |
-        npm install -g ngrok
-        ngrok http 3000 &
-        sleep 5
-        export NGROK_URL=$(curl -s http://localhost:4040/api/tunnels | jq -r .tunnels[0].public_url)
-        echo "NGROK_URL=$NGROK_URL" >> $GITHUB_ENV
-
-    - name: Update OAuth Callback URL
-      run: |
-        curl -X PATCH \
-          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-          -H "Accept: application/vnd.github.v3+json" \
-          -d '{"redirect_uri":"${{ env.NGROK_URL }}/api/auth/callback/github"}' \
-          https://api.github.com/applications/${{ secrets.CI_GITHUB_ID }}
       
     - name: Run Playwright tests
       run: pnpm exec playwright test
@@ -55,7 +39,7 @@ jobs:
         GITHUB_SECRET: ${{ secrets.CI_GITHUB_SECRET }}
         GITHUB_TEST_USERNAME: ${{ secrets.CI_GITHUB_TEST_USERNAME }}
         GITHUB_TEST_PASSWORD: ${{ secrets.CI_GITHUB_TEST_PASSWORD }}
-        NEXTAUTH_URL: ${{ env.NGROK_URL }}
+        NEXTAUTH_URL: http://localhost:3000
         NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
       
     - uses: actions/upload-artifact@v4
