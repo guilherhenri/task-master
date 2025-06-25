@@ -2,6 +2,7 @@
   "name": "task-master",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -41,6 +42,7 @@
     "@types/react-dom": "^19.1.6",
     "@typescript-eslint/eslint-plugin": "^8.35.0",
     "@typescript-eslint/parser": "^8.35.0",
+    "dotenv": "^16.5.0",
     "eslint": "^9.29.0",
     "eslint-config-next": "15.3.4",
     "eslint-config-prettier": "^10.1.5",
