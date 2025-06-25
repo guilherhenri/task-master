@@ -14,6 +14,8 @@ export class AuthPage {
   }
 
   async signInWithGitHub(username: string, password: string) {
+    console.log('Username: ', username)
+    console.log('Password: ', password)
     await this.page.getByText('Sign in with GitHub').click()
 
     await this.page.waitForURL(/^https:\/\/github\.com\/login/)
@@ -22,11 +24,6 @@ export class AuthPage {
     await this.page.getByLabel('Username or email address').fill(username)
     await this.page.getByLabel('Password').fill(password)
     await this.page.getByRole('button', { name: 'Sign in' }).first().click()
-
-    console.log('URL após login:', this.page.url()) // Log para depuração
-    if (this.page.url().includes('session')) {
-      console.log('Conteúdo da página:', await this.page.content()) // Log do HTML da página
-    }
 
     await this.page.waitForURL(
       /^https:\/\/github\.com\/login\/oauth\/authorize/,
