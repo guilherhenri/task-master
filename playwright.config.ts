@@ -14,13 +14,43 @@ export default defineConfig({
 
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'setup',
+      testMatch: 'auth.setup.ts',
+      use: {
+        storageState: undefined,
+      },
     },
-
     {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      name: 'chromium-authenticated',
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: 'playwright/.auth/user.json',
+      },
+      dependencies: ['setup'],
+    },
+    {
+      name: 'chromium-unauthenticated',
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: undefined,
+      },
+      testMatch: '*.auth.spec.ts',
+    },
+    {
+      name: 'firefox-authenticated',
+      use: {
+        ...devices['Desktop Firefox'],
+        storageState: 'playwright/.auth/user.json',
+      },
+      dependencies: ['setup'],
+    },
+    {
+      name: 'firefox-unauthenticated',
+      use: {
+        ...devices['Desktop Firefox'],
+        storageState: undefined,
+      },
+      testMatch: '*.auth.spec.ts',
     },
   ],
   testMatch: '*.e2e-spec.ts',

@@ -1,0 +1,43 @@
+.signIn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  background-color: var(--primary);
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 500;
+
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.signIn:hover {
+  background-color: var(--primary-foreground);
+}
+
+.svg {
+  width: 20px;
+  height: 20px;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+}
+
+.spin {
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  from {transform:rotate(0deg);}
+  to {transform:rotate(360deg);}
+}
