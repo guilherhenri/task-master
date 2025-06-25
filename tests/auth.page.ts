@@ -1,7 +1,5 @@
 import { expect, Page } from '@playwright/test'
 
-import { env } from '@/env'
-
 export class AuthPage {
   constructor(private page: Page) {}
 
@@ -18,15 +16,16 @@ export class AuthPage {
   async signInWithGitHub(username: string, password: string) {
     console.log('Username: ', !!username)
     console.log('Password: ', !!password)
-    console.log('Env: ', env)
     await this.page.getByText('Sign in with GitHub').click()
 
+    console.log('URL após clicar em Sign in with Github:', this.page.url()) // Log para depuração
     await this.page.waitForURL(/^https:\/\/github\.com\/login/)
-    console.log('URL após clicar em Sign in:', this.page.url()) // Log para depuração
 
     await this.page.getByLabel('Username or email address').fill(username)
     await this.page.getByLabel('Password').fill(password)
     await this.page.getByRole('button', { name: 'Sign in' }).first().click()
+
+    console.log('URL após clicar em Sign in:', this.page.url()) // Log para depuração
 
     await this.page.waitForURL(
       /^https:\/\/github\.com\/login\/oauth\/authorize/,
