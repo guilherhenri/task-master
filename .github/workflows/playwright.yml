@@ -31,6 +31,14 @@ jobs:
 
     - name: Install Playwright Browsers
       run: pnpm exec playwright install --with-deps
+
+      - name: Start ngrok
+        run: |
+          npm install -g ngrok
+          ngrok http 3000 &
+          sleep 5
+          export NGROK_URL=$(curl -s http://localhost:4040/api/tunnels | jq -r .tunnels[0].public_url)
+          echo "NGROK_URL=$NGROK_URL" >> $GITHUB_ENV
       
     - name: Run Playwright tests
       run: pnpm exec playwright test
