@@ -21,7 +21,7 @@ test.describe('Github Auth', () => {
       .getByLabel('Username or email address')
       .fill(env.GITHUB_TEST_USERNAME)
     await page.getByLabel('Password').fill(env.GITHUB_TEST_PASSWORD)
-    await page.getByRole('button', { name: 'Sign in' }).click()
+    await page.getByRole('button', { name: 'Sign in' }).first().click()
 
     if (
       await page

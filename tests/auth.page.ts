@@ -19,14 +19,20 @@ export class AuthPage {
     await this.page.getByLabel('Password').fill(password)
     await this.page.getByRole('button', { name: 'Sign in' }).first().click()
 
-    if (
-      await this.page
-        .getByRole('button', { name: 'Authorize guilherhenri' })
-        .isVisible()
-    ) {
-      await this.page
-        .getByRole('button', { name: 'Authorize guilherhenri' })
-        .click()
+    await this.page.waitForURL(
+      (url) =>
+        url.href.includes('github.com/login/oauth/authorize') ||
+        url.href.includes('localhost:3000/dashboard'),
+    )
+
+    if (this.page.url().includes('github.com/login/oauth/authorize')) {
+      const authorizeButton = this.page.getByRole('button', {
+        name: /Authorize/i,
+      })
+
+      if (await authorizeButton.isVisible()) {
+        await authorizeButton.click()
+      }
     }
 
     await this.page.waitForURL('http://localhost:3000/dashboard')
