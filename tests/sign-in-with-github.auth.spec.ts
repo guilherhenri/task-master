@@ -17,18 +17,22 @@ test.describe('Github Auth', () => {
 
     await page.getByText('Sign in with GitHub').click()
 
+    await page.waitForURL(/^https:\/\/github\.com\/login/)
+
     await page
       .getByLabel('Username or email address')
       .fill(env.GITHUB_TEST_USERNAME)
     await page.getByLabel('Password').fill(env.GITHUB_TEST_PASSWORD)
     await page.getByRole('button', { name: 'Sign in' }).first().click()
 
-    if (
-      await page
-        .getByRole('button', { name: 'Authorize guilherhenri' })
-        .isVisible()
-    ) {
-      await page.getByRole('button', { name: 'Authorize guilherhenri' }).click()
+    await page.waitForURL(/^https:\/\/github\.com\/login\/oauth\/authorize/)
+
+    const authorizeButton = page.getByRole('button', {
+      name: /Authorize/i,
+    })
+
+    if (await authorizeButton.isVisible()) {
+      await authorizeButton.click()
     }
 
     await page.waitForURL('http://localhost:3000/dashboard')

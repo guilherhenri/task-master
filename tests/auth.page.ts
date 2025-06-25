@@ -15,24 +15,23 @@ export class AuthPage {
 
   async signInWithGitHub(username: string, password: string) {
     await this.page.getByText('Sign in with GitHub').click()
+
+    await this.page.waitForURL(/^https:\/\/github\.com\/login/)
+
     await this.page.getByLabel('Username or email address').fill(username)
     await this.page.getByLabel('Password').fill(password)
     await this.page.getByRole('button', { name: 'Sign in' }).first().click()
 
     await this.page.waitForURL(
-      (url) =>
-        url.href.includes('github.com/login/oauth/authorize') ||
-        url.href.includes('localhost:3000/dashboard'),
+      /^https:\/\/github\.com\/login\/oauth\/authorize/,
     )
 
-    if (this.page.url().includes('github.com/login/oauth/authorize')) {
-      const authorizeButton = this.page.getByRole('button', {
-        name: /Authorize/i,
-      })
+    const authorizeButton = this.page.getByRole('button', {
+      name: /Authorize/i,
+    })
 
-      if (await authorizeButton.isVisible()) {
-        await authorizeButton.click()
-      }
+    if (await authorizeButton.isVisible()) {
+      await authorizeButton.click()
     }
 
     await this.page.waitForURL('http://localhost:3000/dashboard')
